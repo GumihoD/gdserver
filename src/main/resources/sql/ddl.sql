@@ -1,0 +1,25 @@
+-- 充值订单表
+CREATE TABLE `gdserver`.`recharge_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `request_no` varchar(50) NOT NULL COMMENT '请求流水号',
+  `user_no` varchar(50) NOT NULL COMMENT '用户编号',
+  `amount` decimal(20,2) NOT NULL COMMENT '充值金额',
+  `commission` decimal(20,2) DEFAULT NULL COMMENT '佣金',
+  `pay_company` varchar(10) NOT NULL COMMENT '支付公司：YEEPAY-易宝支付,FUIOU-富友支付,ALLINPAY-通联支付,UCFPAY-先锋支付,BAOFOO-宝付,REAPAL-融宝支付,BILL99-快钱支付,LIANLIAN-连连支付,SUMAPAY-丰付,NEWPAY-新生支付,BFBPAY-邦付宝,CHINAGPAY-爱农,GOPAY-国付宝,UMPAY-联动优势,TFTPAY-腾付通 等',
+  `recharge_way` enum('WEB','SWIFT','BANK','BACKROLL','PROXY') NOT NULL COMMENT '支付方式:WEB-网银,SWIFT-快捷支付,快捷支付-转账充值，仅适用迁移场景，调用单笔充值订单查询接口返回,BACKROLL-资金回退充值,PROXY-自动充值',
+  `bank_code` varchar(10) DEFAULT NULL COMMENT '银行编码',
+  `pay_type` enum('B2C','B2B') DEFAULT NULL COMMENT '网银类型:B2C-个人网银,B2B-企业网银',
+  `recharge_status` enum('I','P','F','S') NOT NULL COMMENT '充值状态：I、P、S、F',
+  `error_code` varchar(50) DEFAULT NULL COMMENT '错误码',
+  `error_message` varchar(50) DEFAULT NULL COMMENT '错误码描述',
+  `transaction_time` datetime DEFAULT NULL COMMENT '交易完成时间',
+  `trade_terminal` varchar(10) DEFAULT NULL COMMENT '交易终端:ANDROID;IOS;WEB;H5',
+  `trade_channel` varchar(200) DEFAULT NULL COMMENT '交易渠道',
+  `reconciliation_status` varchar(10) DEFAULT NULL COMMENT '对账状态',
+  `recharge_type` enum('RECHARGE','DIRECT_RECHARGE') NOT NULL COMMENT '充值类型',
+  `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_request_no` (`request_no`),
+  KEY `idx_user_no` (`user_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='充值订单表';
